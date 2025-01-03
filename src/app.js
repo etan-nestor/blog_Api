@@ -1,22 +1,23 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mongoose = require('mongoose');
-const itemRoutes = require('./routes/item.routes');
+
+// l'instance de mon app express
 const app = express();
 
-app.use(cors());
-app.use(bodyParser.json());
+// connect to DB
+const { connectDB } = require('./public/config/db');
+connectDB();
 
-// Connexion à la base de données
-mongoose.connect(process.env.DB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => console.log('Database connected'))
-.catch(err => console.error('Database connection error:', err));
+// Middlewares 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 // Routes
-app.use('/api/items', itemRoutes);
+app.get('/', (req, res) => {
+    res.send('Welcome to the Blog API!');
+});
+
 
 module.exports = app;
