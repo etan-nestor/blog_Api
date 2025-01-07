@@ -1,10 +1,11 @@
-const app = require('./src/app');
-const dotenv = require('dotenv');
+//import des modules necessaires
+const app = require('./src/app')
+const dotenv = require('dotenv')
 
-dotenv.config();
+// Declaration de mon port d'acces au serveur
+const PORT = process.env.PORT || 5000
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+// lancement du serveur : le serveur attend sur : https://localhost:5000
+app.listen(PORT,()=>{
+    console.log(`server running on : https://localhost:${PORT}`)
+})

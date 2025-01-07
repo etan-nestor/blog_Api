@@ -1,23 +1,26 @@
+// import des modules necessaires
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-
-// l'instance de mon app express
-const app = express();
-
-// connect to DB
 const { connectDB } = require('./public/config/db');
-connectDB();
+const { sequelize } = require('./public/config/db')
+const cors = require('cors')
+const bodyPaser = require('body-parser');
 
-// Middlewares 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+// instance de mon application
+const app = express()
 
-// Routes
-app.get('/', (req, res) => {
-    res.send('Welcome to the Blog API!');
-});
+// synchronisation des models avec la DB
 
+sequelize.sync({ alter: false })
+    .then(() => console.log("Synchronisation reussie 😊"))
+    .catch((err) => console.log('Erreur lors de la synchronisation 😡', err))
 
-module.exports = app;
+// appel de la fonction pour la connexion a la DB
+connectDB()
+
+// quelques middlewares
+app.use(bodyPaser.json())
+app.use(bodyPaser.urlencoded({ extended: true }))
+app.use(cors())
+
+// export du module app pour le reste du travail
+module.exports = app
