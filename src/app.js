@@ -1,7 +1,7 @@
 // import des modules necessaires
 const express = require('express');
-const { connectDB } = require('./public/config/db');
-const { sequelize } = require('./public/config/db')
+const { connectDB, sequelize } = require('./public/config/db');
+// const routes = require('./routes')
 const cors = require('cors')
 const bodyPaser = require('body-parser');
 
@@ -21,6 +21,9 @@ connectDB()
 app.use(bodyPaser.json())
 app.use(bodyPaser.urlencoded({ extended: true }))
 app.use(cors())
+
+
+// app.use('/api', routes)
 
 // export du module app pour le reste du travail
 module.exports = app
