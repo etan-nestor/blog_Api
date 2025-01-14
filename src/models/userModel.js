@@ -7,7 +7,6 @@ const User = sequelize.define('User',
         id:{
             type:DataTypes.UUID,
             defaultValue:DataTypes.UUIDV4,
-            allowNull:false,
             primaryKey:true,
         },
         username: {
@@ -32,7 +31,9 @@ const User = sequelize.define('User',
             type: DataTypes.STRING,
             allowNull: true,
         }
-    }, { timestamps: true }
+    }, { 
+        timestamps: true,
+    }
 )
 
 module.exports = User
