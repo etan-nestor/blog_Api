@@ -6,8 +6,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Nouvelle instance Sequelize avec DATABASE_URL
-const sequelize = new Sequelize(process.env.DATABASE_PUBLIC_URL, {
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: 'postgres',
+    protocol: 'postgres',
     dialectOptions: {
         ssl: {
             require: true,

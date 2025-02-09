@@ -6,6 +6,12 @@ const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const dotenv = require('dotenv');
+
+
+
+dotenv.config();
+
 
 // Instance de l'application
 const app = express();
@@ -43,7 +49,7 @@ sequelize.sync({ alter: true })
 // Middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 
 // Routes
 app.use('/api', routes);
