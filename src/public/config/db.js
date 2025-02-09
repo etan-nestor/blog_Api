@@ -1,31 +1,31 @@
-// importation des modules necessaires
+// Importation des modules nécessaires
 const { Sequelize } = require('sequelize');
 const dotenv = require('dotenv');
 
-//configuration du module dotenv pour la prise en charge de l'environnement de travail .env
-dotenv.config()
+// Configuration du module dotenv pour charger les variables d'environnement
+dotenv.config();
 
-// instance de sequelize : parametre de connexion a ma DB
-const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASSWORD,
-    {
-        host: process.env.DB_HOST,
-        dialect: process.env.DB_DIALECT,
-        logging: false,
-    }
-)
+// Nouvelle instance Sequelize avec DATABASE_URL
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    dialectOptions: {
+        ssl: {
+            require: true, // Important pour Railway
+            rejectUnauthorized: false, // Évite les erreurs SSL
+        },
+    },
+    logging: false, // Désactive les logs SQL dans la console
+});
 
-// coonnection a ma DB : blog_DB
-const connectDB = async () => {``
+// Fonction de connexion à la DB
+const connectDB = async () => {
     try {
         await sequelize.authenticate();
-        console.log('Connected to blog_db 😊')
+        console.log('✅ Connecté à PostgreSQL sur Railway 🎉');
     } catch (error) {
-        console.error("Error to connect blog_db", error)
+        console.error('❌ Erreur de connexion à PostgreSQL :', error);
     }
-}
+};
 
-// exportation de mes fonctions  (sequelize pour la creation des models , et connectDB pour la connexion a la DB)
-module.exports = { sequelize, connectDB }
+// Exportation des fonctions (sequelize pour les modèles, connectDB pour la connexion)
+module.exports = { sequelize, connectDB };
