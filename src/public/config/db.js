@@ -9,10 +9,10 @@ dotenv.config();
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: 'postgres',
     dialectOptions: {
-        ssl: {
-            require: true, // Important pour Railway
-            rejectUnauthorized: false, // Évite les erreurs SSL
-        },
+        // ssl: {
+        //     require: true,
+        //     rejectUnauthorized: false,
+        // },
     },
     logging: false, // Désactive les logs SQL dans la console
 });
