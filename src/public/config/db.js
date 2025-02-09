@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Nouvelle instance Sequelize avec DATABASE_URL
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
+const sequelize = new Sequelize(process.env.DATABASE_PUBLIC_URL, {
     dialect: 'postgres',
     protocol: 'postgres',
     dialectOptions: {
@@ -17,6 +17,8 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
     },
     logging: false, // Désactive les logs SQL dans la console
 });
+
+console.log(process.env.DATABASE_PUBLIC_URL);
 
 // Fonction de connexion à la DB
 const connectDB = async () => {
