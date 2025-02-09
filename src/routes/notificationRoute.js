@@ -1,9 +1,10 @@
 const express = require('express')
-const {getNotifications,markAsRead} = require('../controllers/notificationController')
+const { getNotifications, markAsRead } = require('../controllers/notificationController')
+const { authenticate } = require('../public/middlewares/authMiddleware.js');
 
-const router= express.Router()
+const router = express.Router()
 
-router.get('/',getNotifications)
-router.delete('/:id',markAsRead)
+router.get('/', authenticate, getNotifications)
+router.delete('/:id', authenticate, markAsRead)
 
 module.exports = router

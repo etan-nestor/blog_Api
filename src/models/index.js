@@ -1,27 +1,35 @@
 const User = require('./userModel')
 const Post = require('./postModel')
+const Share = require('./shareModel')
 const Comment = require('./commentModel')
 const Like = require('./likeModel')
 const Notification = require('./notificationModel')
 
 // Mes relations (relation entre les tables/entites)
 
-User.hasMany(Post,{onDelete:'CASCADE'})
-Post.belongsTo(User)
+User.hasMany(Share, { onDelete: 'CASCADE' });
+Share.belongsTo(User);
 
-User.hasMany(Comment,{onDelete:'CASCADE'})
+Post.hasMany(Share, { onDelete: 'CASCADE' });
+Share.belongsTo(Post);
+
+User.hasMany(Comment, { onDelete: 'CASCADE' })
 Comment.belongsTo(User)
 
-User.hasMany(Like,{onDelete:'CASCADE'})
+User.hasMany(Like, { onDelete: 'CASCADE' })
 Like.belongsTo(User)
 
-User.hasMany(Notification,{onDelete:'CASCADE'})
+User.hasMany(Notification, { onDelete: 'CASCADE' })
 Notification.belongsTo(User)
 
-Post.hasMany(Comment,{onDelete:'CASCADE'})
+Notification.belongsTo(Post, { onDelete: 'CASCADE' });
+
+Post.hasMany(Comment, { onDelete: 'CASCADE' })
 Comment.belongsTo(Post)
 
-Post.hasMany(Like,{onDelete:'CASCADE'})
+Post.hasMany(Like, { onDelete: 'CASCADE' })
 Like.belongsTo(Post)
 
-module.exports = {User,Post,Comment,Like,Notification}
+
+
+module.exports = { User, Share, Post, Comment, Like, Notification }

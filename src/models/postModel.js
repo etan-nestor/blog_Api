@@ -13,12 +13,12 @@ const Post = sequelize.define('Post',
             type: DataTypes.STRING,
             allowNull: false,
         },
-        dexcription: {
+        description: {
             type: DataTypes.STRING,
             allowNull: false,
         },
         content: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false,
         },
         image: {

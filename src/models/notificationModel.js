@@ -16,6 +16,10 @@ const Notification = sequelize.define('Notification',
         isRead: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
+        },
+        type: {
+            type: DataTypes.ENUM('like', 'comment', 'newsletter', 'new_post'),
+            allowNull: false,
         }
     },
     {

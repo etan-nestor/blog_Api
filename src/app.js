@@ -1,28 +1,52 @@
-// import des modules necessaires
+// Import des modules nécessaires
 const express = require('express');
-const { connectDB,sequelize} = require('./public/config/db');
-const routes = require('./routes/index')
-const cors = require('cors')
-const bodyPaser = require('body-parser');
+const { connectDB, sequelize } = require('./public/config/db');
+const routes = require('./routes/index');
+const cors = require('cors');
+const path = require('path');
+const bodyParser = require('body-parser');
+const multer = require('multer');
 
-// instance de mon application
-const app = express()
+// Instance de l'application
+const app = express();
 
-// appel de la fonction pour la connexion a la DB
-connectDB()
+// Publier le dossier uploads
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-// synchronisation des models avec la DB
+// Connexion à la base de données
+connectDB();
+
+// Configuration de stockage Multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); // Répertoire de stockage
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`); // Nom unique
+    },
+});
+const upload = multer({ storage });
+
+// Middleware pour ajouter Multer aux routes ciblées
+app.use((req, res, next) => {
+    if (req.path.startsWith('/api/posts')) {
+        req.upload = upload;
+    }
+    next();
+});
+
+// Synchronisation des modèles Sequelize
 sequelize.sync({ alter: true })
-    .then(() => console.log("Synchronisation reussie 😊"))
-    .catch((err) => console.log('Erreur lors de la synchronisation 😡', err))
+    .then(() => console.log("Synchronisation réussie 😊"))
+    .catch((err) => console.log('Erreur lors de la synchronisation 😡', err));
 
-// quelques middlewares
-app.use(bodyPaser.json())
-app.use(bodyPaser.urlencoded({ extended: true }))
-app.use(cors())
+// Middlewares
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
+// Routes
+app.use('/api', routes);
 
-app.use('/api', routes)
-
-// export du module app pour le reste du travail
-module.exports = app
+// Export de l'application
+module.exports = app;
