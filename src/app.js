@@ -6,12 +6,6 @@ const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-const dotenv = require('dotenv');
-
-
-
-dotenv.config();
-
 
 // Instance de l'application
 const app = express();
@@ -31,11 +25,12 @@ const storage = multer.diskStorage({
         cb(null, `${Date.now()}-${file.originalname}`); // Nom unique
     },
 });
+
 const upload = multer({ storage });
 
 // Middleware pour ajouter Multer aux routes ciblées
 app.use((req, res, next) => {
-    if (req.path.startsWith('/api/posts')) {
+    if (req.path.startsWith('/api/posts') || req.path.startsWith('/api/users')) {
         req.upload = upload;
     }
     next();
@@ -49,7 +44,7 @@ sequelize.sync({ alter: true })
 // Middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors({ origin: process.env.FRONTEND_URL }));
+app.use(cors());
 
 // Routes
 app.use('/api', routes);

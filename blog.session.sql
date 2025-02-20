@@ -1,10 +1,12 @@
-
--- select * from "Posts";
--- select * from "Users";
+select * from "Users";
 -- select * from "Likes";
 -- select * from "Shares";
-select * from "Comments";
+-- select * from "Comments";
 -- select * from "Notifications";
-
 -- SELECT * FROM "Shares";
-
+-- DELETE FROM "Users" WHERE "username" IN ('nestor');
+-- DELETE FROM "Posts"
+-- WHERE id = 'b137b38c-ca1d-4ed0-98e1-367f05eed010'
+-- ;
+-- select *
+-- from "Posts";

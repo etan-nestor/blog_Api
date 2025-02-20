@@ -1,5 +1,5 @@
 const { Post, Like, Comment, Share } = require('../models');
-const { notifyAllUsers } = require ('../services/notificationService');
+const { notifyAllUsers } = require('../services/notificationService');
 const { Op } = require("sequelize");
 
 
@@ -222,6 +222,69 @@ exports.getArchivedPosts = async (req, res) => {
     }
 };
 
+exports.getSharedPosts = async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        const sharedPosts = await Share.findAll({
+            where: { userId },
+            include: [
+                {
+                    model: Post,
+                    attributes: ['id', 'title', 'content', 'createdAt'],
+                    include: [{ model: User, attributes: ['username'] }],
+                },
+            ],
+        });
+
+        res.json({ sharedPosts: sharedPosts.map(share => share.Post) });
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur serveur', error: error.message });
+    }
+};
+
+exports.getCommentedPosts = async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        const commentedPosts = await Comment.findAll({
+            where: { userId },
+            include: [
+                {
+                    model: Post,
+                    attributes: ['id', 'title', 'content', 'createdAt'],
+                    include: [{ model: User, attributes: ['username'] }],
+                },
+            ],
+            group: ['Post.id'], // Éviter les doublons si l'utilisateur a commenté plusieurs fois le même post
+        });
+
+        res.json({ commentedPosts: commentedPosts.map(comment => comment.Post) });
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur serveur', error: error.message });
+    }
+};
+
+exports.getLikedPosts = async (req, res) => {
+    try {
+        const userId = req.user.id; // ID de l'utilisateur connecté
+
+        const likedPosts = await Like.findAll({
+            where: { userId },
+            include: [
+                {
+                    model: Post,
+                    attributes: ['id', 'title', 'content', 'createdAt'],
+                    include: [{ model: User, attributes: ['username'] }],
+                },
+            ],
+        });
+
+        res.json({ likedPosts: likedPosts.map(like => like.Post) });
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur serveur', error: error.message });
+    }
+};
 
 
 exports.updatePost = async (req, res) => {

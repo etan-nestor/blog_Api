@@ -5,26 +5,20 @@ const dotenv = require('dotenv');
 // Configuration du module dotenv pour charger les variables d'environnement
 dotenv.config();
 
+
 // Nouvelle instance Sequelize avec DATABASE_URL
-const sequelize = new Sequelize(process.env.DATABASE_PUBLIC_URL, {
-    dialect: 'postgres',
-    protocol: 'postgres',
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false,
-        },
-    },
-    logging: false, // Désactive les logs SQL dans la console
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
+    logging: false,
 });
 
-console.log(process.env.DATABASE_PUBLIC_URL);
 
 // Fonction de connexion à la DB
 const connectDB = async () => {
     try {
         await sequelize.authenticate();
-        console.log('✅ Connecté à PostgreSQL sur Railway 🎉');
+        console.log('✅ Connecté à PostgreSQL 🎉');
     } catch (error) {
         console.error('❌ Erreur de connexion à PostgreSQL :', error);
     }

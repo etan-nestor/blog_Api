@@ -1,5 +1,5 @@
 const http = require('http'); // Import du module HTTP
-const app = require('./src/app'); 
+const app = require('./src/app');
 const { Server } = require('socket.io');
 
 // Création du serveur HTTP basé sur Express
